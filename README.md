@@ -37,8 +37,8 @@ openssl rand -hex 32
 ```bash
 # Create data
 mkdir /opt/containers/EXAMPLE_PROJECT/data
-# Clone a TurboStrapi project of choice
-git clone git@github.com:sawden/turbostrapi.git /opt/containers/EXAMPLE_PROJECT/data/app
+# Clone a TurboStrapi project of choice as "project"
+git clone git@github.com:sawden/turbostrapi.git /opt/containers/EXAMPLE_PROJECT/data/project
 ```
 
 ## 🚀 Start the Project

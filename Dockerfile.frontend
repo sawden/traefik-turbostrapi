@@ -6,7 +6,7 @@ RUN apk update
 # Set working directory
 WORKDIR /app
 RUN yarn global add turbo
-COPY ./data/app .
+COPY ./data/project .
 RUN turbo prune @turbostrapi/frontend --docker
 
 # Add lockfile and package.json's of isolated subworkspace
@@ -16,7 +16,7 @@ RUN apk update
 WORKDIR /app
 
 # First install the dependencies (as they change less often)
-COPY ./data/app/.gitignore .gitignore
+COPY ./data/project/.gitignore .gitignore
 COPY --from=builder /app/out/json/ .
 COPY --from=builder /app/out/yarn.lock ./yarn.lock
 RUN yarn install

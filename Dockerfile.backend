@@ -38,5 +38,7 @@ WORKDIR /opt/apps/backend
 RUN chown -R node:node /opt/apps/backend
 USER node
 
+VOLUME ["/opt/apps/backend/public/uploads"]
+
 EXPOSE 1337
 CMD ["yarn", "start"]

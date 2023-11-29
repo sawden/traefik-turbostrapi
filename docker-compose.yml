@@ -31,9 +31,7 @@ services:
     depends_on:
       - backend-db
     volumes:
-      - ./data/project/apps/backend/config:/opt/apps/backend/config
-      - ./data/project/apps/backend/src:/opt/apps/backend/src
-      - ./data/project/apps/backend/public/uploads:/opt/apps/backend/public/uploads
+      - backend-uploads:/opt/apps/backend/public/uploads
 
   backend-db:
     container_name: ${APP_NAME}-backend-db
@@ -49,7 +47,7 @@ services:
     networks:
       - strapi
     volumes:
-      - ./data/backend-db:/var/lib/postgresql/data/
+      - backend-db:/var/lib/postgresql/data/
 
   frontend:
     container_name: ${APP_NAME}-frontend
@@ -70,6 +68,10 @@ services:
     networks:
       - traefik
       - strapi
+
+volumes:
+  backend-uploads:
+  backend-db:
 
 networks:
   traefik:

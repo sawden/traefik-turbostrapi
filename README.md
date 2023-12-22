@@ -29,7 +29,7 @@ cp /opt/containers/EXAMPLE_PROJECT/.env.example /opt/containers/EXAMPLE_PROJECT/
 # Edit the .env and replace 'example' data
 nano /opt/containers/EXAMPLE_PROJECT/.env
 # Generate 'JWT_SECRET', 'ADMIN_JWT_SECRET', 'API_TOKEN_SALT' and 'TRANSFER_TOKEN_SALT' with
-openssl rand -hex 32
+openssl rand -base64 48
 ```
 
 #### 📂 Setting Up TurboStrapi Project

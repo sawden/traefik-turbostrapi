@@ -28,6 +28,10 @@ COPY --from=builder /app/out/full/ .
 RUN yarn turbo run build --filter=@turbostrapi/frontend...
 
 FROM base AS runner
+# Set variables
+ARG NODE_ENV=production
+ENV NODE_ENV=${NODE_ENV}
+
 WORKDIR /app
 
 # Don't run production as root

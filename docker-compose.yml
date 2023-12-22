@@ -6,21 +6,24 @@ services:
       context: .
       dockerfile: Dockerfile.backend
     restart: unless-stopped
-    env_file:
-      - .env
     environment:
-      DATABASE_CLIENT: ${DATABASE_CLIENT}
-      DATABASE_HOST: ${DATABASE_HOST:-backend-db}
-      DATABASE_NAME: ${DATABASE_NAME}
-      DATABASE_USERNAME: ${DATABASE_USERNAME}
-      DATABASE_PORT: ${DATABASE_PORT}
-      JWT_SECRET: ${JWT_SECRET}
-      ADMIN_JWT_SECRET: ${ADMIN_JWT_SECRET}
-      DATABASE_PASSWORD: ${DATABASE_PASSWORD}
+      BACKEND_APP_KEYS: ${BACKEND_APP_KEYS}
+      BACKEND_API_TOKEN_SALT: ${BACKEND_API_TOKEN_SALT}
+      BACKEND_TRANSFER_TOKEN_SALT: ${BACKEND_TRANSFER_TOKEN_SALT}
+      BACKEND_JWT_SECRET: ${BACKEND_JWT_SECRET}
+      BACKEND_ADMIN_JWT_SECRET: ${BACKEND_ADMIN_JWT_SECRET}
+      BACKEND_HOST: ${BACKEND_HOST}
+      BACKEND_PORT: ${BACKEND_PORT}
+      BACKEND_DATABASE_USERNAME: ${BACKEND_DATABASE_USERNAME}
+      BACKEND_DATABASE_PASSWORD: ${BACKEND_DATABASE_PASSWORD}
+      BACKEND_DATABASE_HOST: ${BACKEND_DATABASE_HOST:-backend-db}
+      BACKEND_DATABASE_PORT: ${BACKEND_DATABASE_PORT}
+      BACKEND_DATABASE_NAME: ${BACKEND_DATABASE_NAME}
+      BACKEND_DATABASE_CLIENT: ${BACKEND_DATABASE_CLIENT}
       NODE_ENV: ${NODE_ENV}
     labels:
       - "traefik.enable=true"
-      - "traefik.http.services.${APP_NAME}-strapi.loadbalancer.server.port=1337"
+      - "traefik.http.services.${APP_NAME}-strapi.loadbalancer.server.port=${BACKEND_PORT}"
       - "traefik.http.routers.${APP_NAME}-strapi.entrypoints=websecure"
       - "traefik.http.routers.${APP_NAME}-strapi.tls=true"
       - "traefik.http.routers.${APP_NAME}-strapi.tls.certresolver=cloudflare"
@@ -41,9 +44,9 @@ services:
       - .env
     image: postgres:16.1-alpine
     environment:
-      POSTGRES_USER: ${DATABASE_USERNAME}
-      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
-      POSTGRES_DB: ${DATABASE_NAME}
+      POSTGRES_USER: ${BACKEND_DATABASE_USERNAME}
+      POSTGRES_PASSWORD: ${BACKEND_DATABASE_PASSWORD}
+      POSTGRES_DB: ${BACKEND_DATABASE_NAME}
     networks:
       - strapi
     volumes:
@@ -55,8 +58,10 @@ services:
       context: .
       dockerfile: Dockerfile.frontend
     restart: unless-stopped
-    env_file:
-      - .env
+    environment:
+      FRONTEND_BACKEND_API_SECRET: ${FRONTEND_BACKEND_API_SECRET}
+      FRONTEND_BACKEND_URL: ${FRONTEND_BACKEND_URL}
+      NODE_ENV: ${NODE_ENV}
     labels:
       - "traefik.enable=true"
       - "traefik.docker.network=traefik"
